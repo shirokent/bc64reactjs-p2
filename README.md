@@ -7,3 +7,6 @@
 - .gitignore: là file chứa các đường dẫn mà mình ko muốn đẩy lên git
 
 - src: toàn bộ ứng dụng sẽ đc code troeen thư mục này (quan trọng nhất index.js)
+
+cú pháp tạo dự án mới trong nodejs:
+- npx create-react-app .
