@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class CartShoe extends Component {
   renderListTrShoeCart = () => {
-    let { dataCartShoe } = this.props;
+    let { dataCartShoe, handleDeleteShoe, handleChangeQuantity } = this.props;
     return dataCartShoe.map((shoe, index) => {
       return (
         <tr>
@@ -11,10 +11,35 @@ export default class CartShoe extends Component {
             <img width={50} src={shoe.image} alt="" />
           </td>
           <td>{shoe.price}</td>
-          <td>{shoe.soLuong}</td>
+          <td>
+            <button
+              onClick={() => {
+                handleChangeQuantity(shoe.id, -1);
+              }}
+              className="btn btn-danger"
+            >
+              -
+            </button>
+            <p className="mx-3">{shoe.soLuong}</p>
+            <button
+              onClick={() => {
+                handleChangeQuantity(shoe.id, 1);
+              }}
+              className="btn btn-success"
+            >
+              +
+            </button>
+          </td>
           <td>{shoe.price * shoe.soLuong}</td>
           <td>
-            <button className="btn btn-danger">Delete</button>
+            <button
+              onClick={() => {
+                handleDeleteShoe(shoe.id);
+              }}
+              className="btn btn-danger"
+            >
+              Delete
+            </button>
           </td>
         </tr>
       );

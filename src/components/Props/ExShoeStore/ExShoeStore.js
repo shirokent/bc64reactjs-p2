@@ -149,33 +149,33 @@ const dataListShoe = [
 export default class ExShoeStore extends Component {
   state = {
     arrCart: [
-      {
-        id: 1,
-        name: "Adidas Prophere",
-        alias: "adidas-prophere",
-        price: 350,
-        description:
-          "The adidas Primeknit upper wraps the foot with a supportive fit that enhances movement.\r\n\r\n",
-        shortDescription:
-          "The midsole contains 20% more Boost for an amplified Boost feeling.\r\n\r\n",
-        soLuong: 2,
-        image: "http://svcy3.myclass.vn/images/adidas-prophere.png",
-      },
+      // {
+      //   id: 1,
+      //   name: "Adidas Prophere",
+      //   alias: "adidas-prophere",
+      //   price: 350,
+      //   description:
+      //     "The adidas Primeknit upper wraps the foot with a supportive fit that enhances movement.\r\n\r\n",
+      //   shortDescription:
+      //     "The midsole contains 20% more Boost for an amplified Boost feeling.\r\n\r\n",
+      //   soLuong: 2,
+      //   image: "http://svcy3.myclass.vn/images/adidas-prophere.png",
+      // },
     ],
   };
 
   handleAddShoe = (shoeClick) => {
-    console.log("add shoe", shoeClick);
+    // console.log("add shoe", shoeClick);
     let shoeCartClick = { ...shoeClick, soLuong: 1 };
     let cartShoeCurrent = this.state.arrCart;
     // Function thực hiện chức năng thêm sản phẩm
     // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-    let indexShoe = cartShoeCurrent.findIndex((shoe) => {
-      shoe.id == shoeClick.id;
-    });
+    let indexShoe = cartShoeCurrent.findIndex(
+      (shoe) => shoe.id == shoeClick.id
+    );
     // Nếu mà đã có sản phẩm trong giỏ hàng rồi thì số lượng +1
-    if (indexShoe != 1) {
-      cartShoeCurrent[indexShoe] += 1;
+    if (indexShoe != -1) {
+      cartShoeCurrent[indexShoe].soLuong += 1;
     } else {
       // Nếu chưa có thì thêm sản phẩm vào arr Cart
       cartShoeCurrent.push(shoeCartClick);
@@ -187,6 +187,36 @@ export default class ExShoeStore extends Component {
     });
   };
 
+  handleDeleteShoe = (idShoeClick) => {
+    // 2
+    let arrCartEdit = this.state.arrCart;
+
+    // Hàm filter này tạo ra 1 mảng mới ko chứa obj shoe có id = với idshoeclick
+    arrCartEdit = arrCartEdit.filter((shoe) => shoe.id != idShoeClick);
+
+    this.setState({
+      arrCart: arrCartEdit,
+    });
+  };
+
+  handleChangeQuantity = (idShoeClick, quantity) => {
+    // console.log("change");
+    let arrCartEdit = this.state.arrCart;
+    let shoeClick = arrCartEdit.find((shoe) => shoe.id == idShoeClick);
+
+    if (shoeClick) {
+      shoeClick.soLuong += quantity;
+      if (shoeClick.soLuong < 1) {
+        this.handleDeleteShoe(idShoeClick);
+        return;
+      }
+    }
+
+    this.setState({
+      arrCart: arrCartEdit,
+    });
+  };
+
   render() {
     return (
       <div className="container">
@@ -195,7 +225,11 @@ export default class ExShoeStore extends Component {
           handleAddShoe={this.handleAddShoe}
         />
         <h3 className="mt-5">Giỏ hàng</h3>
-        <CartShoe dataCartShoe={this.state.arrCart} />
+        <CartShoe
+          handleDeleteShoe={this.handleDeleteShoe}
+          handleChangeQuantity={this.handleChangeQuantity}
+          dataCartShoe={this.state.arrCart}
+        />
       </div>
     );
   }
